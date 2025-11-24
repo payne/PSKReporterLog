@@ -1,5 +1,6 @@
 package com.pskreporter.log.service;
 
+import com.pskreporter.log.entity.MonitoredCallsign;
 import com.pskreporter.log.model.PSKReception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class DemoDataGenerator {
         try {
             List<String> monitoredCallsigns = callsignService.getActiveCallsigns()
                 .stream()
-                .map(mc -> mc.getCallsign())
+                .map(MonitoredCallsign::getCallsign)
                 .toList();
 
             if (monitoredCallsigns.isEmpty()) {

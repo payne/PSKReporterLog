@@ -54,8 +54,9 @@ public class PSKReporterClient {
 
     private void receiveData() {
         try {
-            // Join multicast group for PSKReporter data
-            InetAddress group = InetAddress.getByName(config.getServer().getHost());
+            // Note: PSKReporter uses UDP streaming (not multicast in current implementation)
+            // For actual PSKReporter integration, you may need to use MulticastSocket
+            // and join the appropriate multicast group based on PSKReporter's current protocol
             socket = new DatagramSocket(config.getServer().getPort());
             socket.setSoTimeout(10000); // 10 second timeout
             
@@ -94,17 +95,16 @@ public class PSKReporterClient {
      */
     private void processPacket(byte[] data, int length) {
         try {
-            // For demonstration purposes, we'll create synthetic data
+            // For demonstration purposes, we use synthetic data from DemoDataGenerator
             // In a real implementation, you would parse the actual PSKReporter binary format
-            
-            // The PSKReporter format is documented but complex - this is a placeholder
-            // that will be replaced with actual parsing logic or use a library
+            // using the parseReception method below or a dedicated PSKReporter protocol library
             
             log.debug("Received {} bytes from PSKReporter", length);
             
-            // Example: Create a synthetic reception for demonstration
-            // This should be replaced with actual packet parsing
-            parseSyntheticData(data, length);
+            // TODO: Implement actual PSKReporter packet parsing
+            // The PSKReporter format is documented at http://pskreporter.info/pskdev.html
+            // Example: PSKReception reception = parseReception(ByteBuffer.wrap(data, 0, length));
+            //          receptionProcessor.processReception(reception);
             
         } catch (Exception e) {
             log.error("Error processing packet", e);
@@ -112,24 +112,19 @@ public class PSKReporterClient {
     }
 
     /**
-     * Temporary method to generate synthetic data for testing.
-     * This should be replaced with actual PSKReporter packet parsing.
-     */
-    private void parseSyntheticData(byte[] data, int length) {
-        // This is a placeholder - in production, parse actual PSKReporter data
-        // For now, we'll periodically generate test data in the monitoring service
-        log.trace("Packet received but using synthetic data mode");
-    }
-
-    /**
      * Parse a reception report from the packet data.
-     * This is a simplified placeholder.
+     * This is a stub for actual PSKReporter packet parsing implementation.
+     * The real implementation would decode the binary format according to
+     * PSKReporter protocol specification.
+     * 
+     * @param buffer ByteBuffer containing the packet data
+     * @return Parsed PSKReception object
      */
+    @SuppressWarnings("unused")
     private PSKReception parseReception(ByteBuffer buffer) {
-        // Placeholder for actual PSKReporter packet parsing
-        // The real implementation would decode the binary format
-        return PSKReception.builder()
-            .timestamp(LocalDateTime.now())
-            .build();
+        // TODO: Implement actual PSKReporter binary protocol parsing
+        // See: http://pskreporter.info/pskdev.html for protocol details
+        // This stub is left for future implementation
+        throw new UnsupportedOperationException("PSKReporter packet parsing not yet implemented");
     }
 }
