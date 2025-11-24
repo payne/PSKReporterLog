@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: pskreporter-log
+  
+  # Database configuration
+  datasource:
+    url: jdbc:h2:file:./data/pskreporter
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  
+  # Mail configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# PSKReporter configuration
+pskreporter:
+  # PSKReporter uses UDP streaming on port 4739
+  server:
+    host: report.pskreporter.info
+    port: 4739
+  
+  # Monitored callsigns (can be overridden via environment variables)
+  monitored-callsigns: ${MONITORED_CALLSIGNS:W1AW,K1TTT,N0CALL}
+  
+  # Alert configuration
+  alert:
+    # Alert recipient emails (comma-separated)
+    recipients: ${ALERT_RECIPIENTS:admin@example.com}
+    # Condition X: SNR threshold for alerts
+    snr-threshold: ${ALERT_SNR_THRESHOLD:10}
+    # Distance threshold in km
+    distance-threshold: ${ALERT_DISTANCE_THRESHOLD:1000}
+    # Enable email alerts
+    enabled: ${ALERT_ENABLED:true}
+
+# Logging
+logging:
+  level:
+    com.pskreporter: INFO
+    org.springframework: WARN
